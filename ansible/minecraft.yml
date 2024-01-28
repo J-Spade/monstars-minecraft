@@ -27,6 +27,7 @@
         ansible.builtin.copy:
           dest: /etc/mine.d/
           src: ./files/server.jar
+          force: false
           owner: root
           group: root
 
@@ -34,6 +35,7 @@
         ansible.builtin.copy:
           dest: /etc/mine.d/
           src: ./files/server.properties
+          force: false
           owner: root
           group: root
 
@@ -41,6 +43,7 @@
         ansible.builtin.copy:
           dest: /etc/mine.d/
           src: ./files/eula.txt
+          force: false
           owner: root
           group: root
 
@@ -48,6 +51,7 @@
         ansible.builtin.copy:
           dest: /etc/systemd/system/
           src: ./files/mine.service
+          force: false
           owner: root
           group: root
 
