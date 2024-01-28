@@ -1,0 +1,5 @@
+---
+systemd_name: mine
+systemd_desc: Multi Instance Network Enitity
+service_dir: /etc/mine.d
+service_owner: root
