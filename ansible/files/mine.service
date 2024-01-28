@@ -1,0 +1,17 @@
+[Unit]
+Description=Multi Instance Network Enitity
+After=multi-user.target
+StartLimitIntervalSec=5
+StartLimitBurst=3
+
+[Service]
+ExecStart=/usr/bin/java -Xmx512m -jar /etc/mine.d/server.jar
+Type=ExecStart
+Restart=Always
+RestartSec=5s
+WorkingDirectory=/etc/mine.d
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

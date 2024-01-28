@@ -1,0 +1,69 @@
+---
+
+- name: Install Minecraft
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+      - name: os version
+        ansible.builtin.debug: msg="{{ ansible_distribution }}"
+
+      - name: (apt) install JRE
+        ansible.builtin.apt:
+          name: default-jre
+          state: present
+          update_cache: yes
+        when: ansible_os_family == 'Debian'
+
+      - name: (yum) install JRE
+        ansible.builtin.yum:
+          name: java
+          state: present
+          update_cache: yes
+        when: ansible_os_family == 'RedHat'
+
+      - name: copy server.jar
+        ansible.builtin.copy:
+          dest: /etc/mine.d/
+          src: ./files/server.jar
+          owner: root
+          group: root
+
+      - name: copy server.properties
+        ansible.builtin.copy:
+          dest: /etc/mine.d/
+          src: ./files/server.properties
+          owner: root
+          group: root
+
+      - name: copy eula.txt
+        ansible.builtin.copy:
+          dest: /etc/mine.d/
+          src: ./files/eula.txt
+          owner: root
+          group: root
+
+      - name: copy service config
+        ansible.builtin.copy:
+          dest: /etc/systemd/system/
+          src: ./files/mine.service
+          owner: root
+          group: root
+
+      - name: (ufw) allow TCP port
+        ansible.builtin.shell: |
+            ufw allow 25565/tcp
+        when: ansible_os_family == 'Debian'
+
+      - name: (firewalld) allow TCP port
+        ansible.builtin.shell: |
+            firewall-cmd --permanent --add-port=25565/tcp
+            firewall-cmd --reload
+        when: ansible_os_family == 'RedHat'
+
+      - name: enable + start service
+        ansible.builtin.shell: |
+            systemctl daemon-reload
+            systemctl enable mine.service
+            systemctl start mine.service
