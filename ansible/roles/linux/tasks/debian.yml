@@ -1,5 +1,5 @@
 ---
-- name: YUM Install JRE
+- name: APT Install JRE
   ansible.builtin.apt:
     name: default-jre
     state: present
