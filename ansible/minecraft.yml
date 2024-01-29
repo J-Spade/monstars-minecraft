@@ -3,17 +3,17 @@
   hosts: all
   become: true
   gather_facts: true
-  
+
   vars:
     game_mode: creative
     server_ip: 0.0.0.0
     server_port: 25565
     server_motd: Diamonds > BTC
-  
+
   tasks:
     - name: OS Version
       ansible.builtin.debug:
-          msg: "{{ ansible_distribution }}"
+        msg: "{{ ansible_distribution }}"
 
     - name: Include System Roles
       ansible.builtin.include_role:
