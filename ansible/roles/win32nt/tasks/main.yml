@@ -1,0 +1,51 @@
+---
+- name: Copy JDK Zip
+  ansible.windows.win_copy:
+      dest: "{{ download_dir }}\\"
+      src: openjdk-21.0.2_windows-x64_bin.zip
+      force: false
+
+- name: Extract JDK
+  ansible.windows.win_shell: |
+      mkdir "C:\\Program Files\\Java"
+      powershell "Expand-Archive -Path '{{ download_dir }}\\openjdk-21.0.2_windows-x64_bin.zip' -DestinationPath 'C:\\Program Files\\Java\\'"
+      del {{ download_dir }}\openjdk-21.0.2_windows-x64_bin.zip
+
+- name: Copy Server Package
+  ansible.windows.win_copy:
+      dest: "{{ service_dir }}\\"
+      src: server.jar
+      force: false
+
+- name: Copy Server Configuration
+  ansible.windows.win_template:
+      dest: "{{ service_dir }}\\server.properties"
+      src: server-properties.j2
+      force: false
+
+- name: Copy EULA
+  ansible.windows.win_copy:
+      dest: "{{ service_dir }}\\"
+      src: eula.txt
+      force: false
+
+- name: Allow 25565/TCP (netsh)
+  ansible.windows.win_shell: |
+      netsh advfirewall firewall add rule name="{{service_name}}" dir=in action=allow protocol=TCP localport=25565
+
+- name: Copy Scheduled Task XML
+  ansible.windows.win_template:
+      dest: "{{ download_dir }}\\task.xml"
+      src: schtasks-xml.j2
+      force: false
+
+- name: Create + Run Scheduled Task
+  register: shell_output
+  ansible.windows.win_shell: |
+      schtasks /create /tn {{ schtask_name }} /xml "{{ download_dir }}\\task.xml"
+      schtasks /run /tn {{ schtask_name }}
+      del "{{ download_dir }}\\task.xml"
+
+- name: Schtasks Output
+  debug:
+    msg: "{{ shell_output }}"

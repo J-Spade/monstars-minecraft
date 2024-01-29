@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: default-jre
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Allow 25565/TCP (ufw)
   ansible.builtin.shell: |

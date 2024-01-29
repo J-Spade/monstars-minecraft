@@ -3,6 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
+  
   vars:
     game_mode: creative
     server_ip: 0.0.0.0
