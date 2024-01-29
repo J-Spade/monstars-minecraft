@@ -1,0 +1,5 @@
+---
+download_dir: "C:\\Windows"
+schtask_name: \Mine
+service_name: Multi Instance Networking Entity
+service_dir: C:\Windows\System32\mine

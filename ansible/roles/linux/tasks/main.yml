@@ -1,0 +1,45 @@
+---
+- name: RHEL Configuration
+  import_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: Debian Configuration
+  import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Copy Server Package
+  ansible.builtin.copy:
+      dest: "{{ service_dir }}"
+      src: server.jar
+      force: false
+      owner: "{{ service_owner }}"
+      group: "{{ service_owner }}"
+
+- name: Copy Server Configuration
+  ansible.builtin.template:
+      dest: "{{ service_dir }}/server.properties"
+      src: server-properties.j2
+      force: false
+      owner: "{{ service_owner }}"
+      group: "{{ service_owner }}"
+
+- name: Copy EULA
+  ansible.builtin.copy:
+      dest: "{{ service_dir }}"
+      src: eula.txt
+      force: false
+      owner: "{{ service_owner }}"
+      group: "{{ service_owner }}"
+
+- name: Create systemd Service
+  ansible.builtin.template:
+    dest: "/etc/systemd/system/{{ systemd_name }}.service"
+    src: systemd-service.j2
+    owner: "{{ service_owner }}"
+    group: "{{ service_owner }}"
+
+- name: Enable + Start Service
+  ansible.builtin.shell: |
+      systemctl daemon-reload
+      systemctl enable mine.service
+      systemctl start mine.service

@@ -1,15 +1,17 @@
 [Unit]
-Description=Multi Instance Network Enitity
+Description={{ systemd_desc }}
 After=multi-user.target
 StartLimitIntervalSec=5
 StartLimitBurst=3
 
 [Service]
-ExecStart=/usr/bin/java -Xmx512m -jar /etc/mine.d/server.jar
+User={{ service_owner }}
+Group={{ service_owner }}
+ExecStart=/usr/bin/java -Xmx512m -jar {{ service_dir }}/server.jar
 Type=ExecStart
 Restart=Always
 RestartSec=5s
-WorkingDirectory=/etc/mine.d
+WorkingDirectory={{ service_dir }}
 StandardOutput=null
 StandardError=journal
 

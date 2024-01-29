@@ -1,0 +1,10 @@
+---
+- name: APT Install JRE
+  ansible.builtin.apt:
+    name: default-jre
+    state: present
+    update_cache: true
+
+- name: Allow 25565/TCP (ufw)
+  ansible.builtin.shell: |
+      ufw allow 25565/tcp
