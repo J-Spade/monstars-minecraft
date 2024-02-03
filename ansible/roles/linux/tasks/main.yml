@@ -7,6 +7,13 @@
   import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- name: Create Server Directory
+  ansible.builtin.file:
+      path: "{{ service_dir }}"
+      state: directory
+      owner: "{{ service_owner }}"
+      group: "{{ service_owner }}"
+
 - name: Copy Server Package
   ansible.builtin.copy:
       dest: "{{ service_dir }}/server.jar"
