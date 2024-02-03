@@ -9,7 +9,7 @@
 
 - name: Copy Server Package
   ansible.builtin.copy:
-      dest: "{{ service_dir }}"
+      dest: "{{ service_dir }}/server.jar"
       src: server.jar
       force: false
       owner: "{{ service_owner }}"
@@ -25,7 +25,7 @@
 
 - name: Copy EULA
   ansible.builtin.copy:
-      dest: "{{ service_dir }}"
+      dest: "{{ service_dir }}/eula.txt"
       src: eula.txt
       force: false
       owner: "{{ service_owner }}"
