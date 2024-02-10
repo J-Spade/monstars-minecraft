@@ -3,6 +3,7 @@
   hosts: all
   become: true
   gather_facts: true
+  no_log: true
 
   vars:
     game_mode: creative
