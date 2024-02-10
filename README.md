@@ -3,7 +3,7 @@
 **Minecraft Server Version**: 1.16.5
 
 ```bash
-$ ansible-playbook -kK ./minecraft.yml -i ./inventory-minecraft.ini --limit [host]
+$ ansible-playbook -kK ./minecraft.yml -i ./inventory-minecraft.ini --user [user] --limit [host]
 ```
 
 **OpenJDK**
