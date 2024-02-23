@@ -7,5 +7,5 @@
 
 - name: Allow 25565/TCP (firewalld)
   ansible.builtin.shell: |
-      firewall-cmd --permanent --add-port=25565/tcp
+      firewall-cmd --permanent --add-port="{{ server_port }}/tcp"
       firewall-cmd --reload

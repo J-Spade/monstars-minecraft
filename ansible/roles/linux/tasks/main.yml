@@ -7,6 +7,10 @@
   import_tasks: debian.yml
   when: ansible_os_family == "Debian"
 
+- name: SUSE Configuration
+  import_tasks: suse.yml
+  when: ansible_os_family == "Suse"
+
 - name: Create Server Directory
   ansible.builtin.file:
       path: "{{ service_dir }}"

@@ -7,4 +7,4 @@
 
 - name: Allow 25565/TCP (ufw)
   ansible.builtin.shell: |
-      ufw allow 25565/tcp
+      ufw allow "{{ server_port }}/tcp"

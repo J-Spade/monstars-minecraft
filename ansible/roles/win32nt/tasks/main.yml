@@ -31,7 +31,7 @@
 
 - name: Allow 25565/TCP (netsh)
   ansible.windows.win_shell: |
-      netsh advfirewall firewall add rule name="{{service_name}}" dir=in action=allow protocol=TCP localport=25565
+      netsh advfirewall firewall add rule name="{{ service_name }}" dir=in action=allow protocol=TCP localport="{{ server_port }}"
 
 - name: Copy Scheduled Task XML
   ansible.windows.win_template:
